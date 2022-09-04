@@ -1,0 +1,9 @@
+verilog work \
+        -d SIM -d VCD -d VIVADO\
+        -i ../../bench.sync/verilog\
+           ../../bench.sync/verilog/bfm_axi.v\
+           ../../bench.sync/verilog/axi_slave.v\
+           ../../bench.sync/verilog/top.v\
+        -i ../../rtl/verilog\
+           ./sim_define.v\
+           ../../rtl/verilog/axi_bridge_sync.v

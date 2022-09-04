@@ -1,0 +1,9 @@
+verilog work \
+        -d SIM -d VCD -d VIVADO\
+        -i ../../bench.stream.bmp/verilog\
+           ../../bench.stream.bmp/verilog/check_stream.v\
+           ../../bench.stream.bmp/verilog/bmp_stimulus_stream.v\
+           ../../bench.stream.bmp/verilog/top.v\
+        -i ../../rtl/verilog\
+           ../../rtl/verilog/tea_decryptor_stream.v\
+           ../../rtl/verilog/tea_encryptor_stream.v
