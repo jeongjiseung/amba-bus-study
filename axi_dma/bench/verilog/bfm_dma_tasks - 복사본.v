@@ -52,7 +52,13 @@
      read_task(3, CSRA_DEST   , 4, 1, 1); 
      $display($time,,"%m %s A:0x%08X D:0x%08X", "DEST   ", CSRA_DEST   , dataRW[0]);
 
-					
+
+     for(i=0;i<16;i=i+1) begin
+	   $display($time,,"%m dataRW[%0D] = %0x",i,dataRW[i]);
+	end
+	 for(i=0;i<16;i=i+1) begin
+	   $display($time,,"%m dataRB[%0D] = %0x",i,dataRB[i]);
+	 end						
 
    end
    endtask
@@ -155,96 +161,90 @@
   reg [31:0] ma_32;
 
    begin
-iend = 4;
-
-	 $display($time,,"%m \nwrite 1 ===========================================================");	
+iend = 16;
 
      {dataWB[3],dataWB[2],dataWB[1],dataWB[0]} = 32'h8000_0001; // enable
      value = {dataWB[3],dataWB[2],dataWB[1],dataWB[0]};
-	 for(i=0;i<iend;i=i+1) begin
-	    $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
-	 end
-	 $display($time,,"%m value = %x",value);	
-     $display($time,,"%m value = %b_%b_%b_%b",value[31:24],value[23:16],value[15:8],value[7:0]);
+	//  for(i=0;i<iend;i=i+1) begin
+	//     $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
+	//  end
+	//  $display($time,,"%m value = %x",value);	
+   //   $display($time,,"%m value = %b_%b_%b_%b",
+   //     value[31:24],value[23:16],value[15:8],value[7:0]);
 
      // CSRA_CONTROL = 32'hA000_0000 + 8'h30,
-     write_task(6, CSRA_CONTROL, 4, 1, 1); // id는 왜 2?
-     $display();
+     write_task(2, CSRA_CONTROL, 4, 1, 1); // id는 왜 2?
+   //   $display();
 
 
-$display($time,,"%m \nwrite 2 ===========================================================");	
      {dataWB[3],dataWB[2],dataWB[1],dataWB[0]} = src;
-	 $display($time,,"%m src = %x",src);
-       $display($time,,"%m src = %b_%b_%b_%b",src[31:24],src[23:16],src[15:8],src[7:0]);
-	 for(i=0;i<iend;i=i+1) begin
-	    $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
-	 end		
+	//  $display($time,,"%m src = %x",src);
+   //     $display($time,,"%m src = %b_%b_%b_%b",src[31:24],src[23:16],src[15:8],src[7:0]);
+	//  for(i=0;i<iend;i=i+1) begin
+	//     $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
+	//  end		
 
 //   CSRA_SOURCE  = 32'hA000_0000 + 8'h44,
-     write_task(6, CSRA_SOURCE, 4, 1, 1);
-     $display();
+     write_task(2, CSRA_SOURCE, 4, 1, 1);
+   //   $display();
 
-$display($time,,"%m \nwrite 3 ===========================================================");	
+
      {dataWB[3],dataWB[2],dataWB[1],dataWB[0]} = dst;
-		 $display($time,,"%m dst = %x",dst);
-            $display($time,,"%m dst = %b_%b_%b_%b",dst[31:24],dst[23:16],dst[15:8],dst[7:0]);
-	 for(i=0;i<iend;i=i+1) begin
-	    $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
-	 end		
-
+	// 	 $display($time,,"%m dst = %x",dst);
+   //          $display($time,,"%m dst = %b_%b_%b_%b",dst[31:24],dst[23:16],dst[15:8],dst[7:0]);
+	//  for(i=0;i<iend;i=i+1) begin
+	//     $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
+	//  end		
 
      // CSRA_DEST    = 32'hA000_0000 + 8'h48;
-     write_task(6, CSRA_DEST, 4, 1, 1);
-     $display();
+     write_task(2, CSRA_DEST, 4, 1, 1);
+   //   $display();
 
 
-$display($time,,"%m \nwrite 4 ===========================================================");	
-     
      //value = bnum | (chunk<<16) | (1<<31);
      value = bnum | (chunk<<2) | (1<<31);
 
-	 $display($time,,"%m bnum = %b(%0d)",bnum,bnum);
-	 $display($time,,"%m chunk=%b(%0d) ",chunk,chunk);
-	 $display($time,,"%m (chunk<<2):%b",(chunk<<2));
-	 $display($time,,"%m (1<<31) = %b",(1<<31));
+	//  $display($time,,"%m bnum = %b(%0d)",bnum,bnum);
+	//  $display($time,,"%m chunk=%b ",chunk);
+	//  $display($time,,"%m (chunk<<2):%b",(chunk<<2));
+	//  $display($time,,"%m (1<<31) = %b",(1<<31));
 
-	  $display($time,,"%m value = %x",value);
-     $display($time,,"%m value = %b_%b_%b_%b",value[31:24],value[23:16],value[15:8],value[7:0]);
+	//  $display($time,,"%m value = %x",value);
+   //     $display($time,,"%m value = %b_%b_%b_%b",
+   //     value[31:24],value[23:16],value[15:8],value[7:0]);
 
 
      {dataWB[3],dataWB[2],dataWB[1],dataWB[0]} = value;
-     for(i=0;i<iend;i=i+1) begin
-	    $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
-	 end		
-
+   //   for(i=0;i<iend;i=i+1) begin
+	//     $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
+	//  end		
 
      // CSRA_NUM     = 32'hA000_0000 + 8'h40,
-     write_task(6, CSRA_NUM, 4, 1, 1);
-     $display();
+     write_task(2, CSRA_NUM, 4, 1, 1);
+   //   $display();
    
 
      i = 1;
 
-   ma_32 = 32'h8000_0000;
+ma_32 = 32'h8000_0000;
 
      while (value&32'h8000_0000) begin
 
-        $display($time,,"%m --------------<%0d>-------------------------",i);
- $display($time,,"%m value = %b_%b_%b_%b",value[31:24],value[23:16],value[15:8],value[7:0]);	
- $display($time,,"%m ma_32 = %b_%b_%b_%b",ma_32[31:24],ma_32[23:16],ma_32[15:8],ma_32[7:0]);	
+//         $display($time,,"%m --------------<%0d>-------------------------",i);
+//  $display($time,,"%m value = %b_%b_%b_%b",value[31:24],value[23:16],value[15:8],value[7:0]);	
+//  $display($time,,"%m ma_32 = %b_%b_%b_%b",ma_32[31:24],ma_32[23:16],ma_32[15:8],ma_32[7:0]);	
 
                  ma_val = value&32'h8000_0000;
 
-                  $display($time,,"%m ma_val  = %x",ma_val);	
-       $display($time,,"%m ma_val = %b_%b_%b_%b",ma_val[31:24],ma_val[23:16],ma_val[15:8],ma_val[7:0]);
+                  // $display($time,,"%m ma_val  = %x",ma_val);	
+      //  $display($time,,"%m ma_val = %b_%b_%b_%b",ma_val[31:24],ma_val[23:16],ma_val[15:8],ma_val[7:0]);
 
         //CSRA_NUM     = 32'hA000_0000 + 8'h40
         read_task(6, CSRA_NUM, 4, 1, 1);
         
         value = dataRW[0];
-        // c000000a -> a0000040 why?
-         $display($time,,"%m value (dataRW[0];) = %x",value);	
-          $display($time,,"%m value = %b_%b_%b_%b",value[31:24],value[23:16],value[15:8],value[7:0]);	
+         // $display($time,,"%m value (dataRW[0];) = %x",value);	
+         //  $display($time,,"%m value = %b_%b_%b_%b",value[31:24],value[23:16],value[15:8],value[7:0]);	
 
          i = i+1;
      end

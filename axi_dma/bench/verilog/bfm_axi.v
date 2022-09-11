@@ -111,6 +111,8 @@ module bfm_axi #(parameter MST_ID   =0         // Master ID
      reg [31:0] saddr, depth;
      reg        DONE = 1'b0;
      integer    nm, ns;
+     
+     integer    i;
      //-----------------------------------------------------------
      initial begin
            CSYSACK     = 1'b1;
@@ -166,12 +168,13 @@ module bfm_axi #(parameter MST_ID   =0         // Master ID
            
            //-----------------------------------------------------
            // normal case
-if (0) begin
-           repeat (10) @ (posedge ACLK);
-           one_dma_test( 32'h0000_1000 // src
-                       , 32'h0001_1000 // dst
-                       , 16'h0010      // bnum
-                       ,  8'h8 // chunk
+if (1) begin
+      //      repeat (5) @ (posedge ACLK);
+      //      repeat (10) @ (posedge ACLK);
+           one_dma_test( 32'h8000_1000 // src d:291
+                       , 32'h8000_2000 // dst d:400
+                       , 16'h1      // bnum
+                       ,  8'h1 // chunk
                        ,  8'h0 // data offset
                        );
 end
@@ -186,6 +189,8 @@ end
 //                        ,  8'h0 // data offset
 //                        );
 // end
+
+
 //            //-----------------------------------------------------
 //            // chunk is 0
 // if (0) begin
@@ -208,40 +213,62 @@ end
 //                        ,  8'h0 // data offset
 //                        );
 // end
+
+
            //-----------------------------------------------------
            // mis-aligned start case
-if (1) begin
-           repeat (10) @ (posedge ACLK);
-           one_dma_test( 32'h0000_1001 // src
-                       , 32'h0001_1001 // dst
-                       , 16'h0013      // bnum
-                       ,  8'h8 // chunk
-                       ,  8'h0 // data offset
-                       );
-end
+// if (1) begin
+//            repeat (10) @ (posedge ACLK);
+//            one_dma_test( 32'h0000_1001 // src
+//                        , 32'h0001_1001 // dst
+//                        , 16'h0013      // bnum
+//                        ,  8'h8 // chunk
+//                        ,  8'h0 // data offset
+//                        );
+// end
+//            //-----------------------------------------------------
+//            // mis-aligned end case
+// if (1) begin
+//            repeat (10) @ (posedge ACLK);
+//            one_dma_test( 32'h0000_1000 // src
+//                        , 32'h0001_1040 // dst
+//                        , 16'h0013      // bnum
+//                        ,  8'h8 // chunk
+//                        ,  8'h0 // data offset
+//                        );
+// end
+//            //-----------------------------------------------------
+//            // mis-aligned start/end case
+// if (1) begin
+//            repeat (10) @ (posedge ACLK);
+//            one_dma_test( 32'h0000_1001 // src
+//                        , 32'h0001_1031 // dst
+//                        , 16'h0020      // bnum
+//                        ,  8'h8 // chunk
+//                        ,  8'h0 // data offset
+//                        );
+// end
+
            //-----------------------------------------------------
-           // mis-aligned end case
-if (1) begin
-           repeat (10) @ (posedge ACLK);
-           one_dma_test( 32'h0000_1000 // src
-                       , 32'h0001_1040 // dst
-                       , 16'h0013      // bnum
-                       ,  8'h8 // chunk
-                       ,  8'h0 // data offset
-                       );
-end
-           //-----------------------------------------------------
-           // mis-aligned start/end case
-if (1) begin
-           repeat (10) @ (posedge ACLK);
-           one_dma_test( 32'h0000_1001 // src
-                       , 32'h0001_1031 // dst
-                       , 16'h0020      // bnum
-                       ,  8'h8 // chunk
-                       ,  8'h0 // data offset
-                       );
-end
-           //-----------------------------------------------------
+
+$display($time,,"%m \nlalalalalalalalalalalalalalalalalalalalalalalalalala");
+
+
+for(i=0;i<WIDTH_DS;i=i+1) begin
+	    $display($time,,"%m dataRB[%0D] = %b(%x)",i,dataRB[i],dataRB[i]);
+	 end
+for(i=0;i<WIDTH_DS;i=i+1) begin
+	    $display($time,,"%m dataRW[%0D] = %b(%x)",i,dataRW[i],dataRW[i]);
+	 end
+       for(i=0;i<WIDTH_DS;i=i+1) begin
+	    $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
+	 end
+
+
+
+
+
+
            repeat (10) @ (posedge ACLK);
            DONE = 1'b1;
            //$finish(2);

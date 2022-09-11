@@ -371,14 +371,14 @@ begin
     //for (idx=addr%WIDTH_DS; (idx<WIDTH_DS)&&(ids<size); idx=idx+1) begin
 	for (idx=offset; (idx<WIDTH_DS)&&(ids<size); idx=idx+1) begin
      
-          // $display($time,,"%m idx(%0d) < WIDTH_DS(%0d) ", idx, WIDTH_DS);
-          // $display($time,,"%m ids(%0d) < size(%0d) ", ids, size);
+          $display($time,,"%m idx(%0d) < WIDTH_DS(%0d) ", idx, WIDTH_DS);
+          $display($time,,"%m ids(%0d) < size(%0d) ", ids, size);
 
           idz = addr+(idx-offset)-saddr;
           data[idx] = dataWB[idz];
 
           $display($time,,"%m dataWB[idz] ) dataWB[%0d] : %b(%x) ", idz, dataWB[idz], dataWB[idz]);
-          // $display($time,,"%m data[idx] ) data[%0d]  : %b(%x)", idx, data[idz], data[idz]);
+          $display($time,,"%m data[idx] ) data[%0d]  : %b(%x)", idx, data[idz], data[idz]);
 
           ids = ids + 1;
     end
@@ -389,8 +389,8 @@ begin
     for (idy=0; idy<WIDTH_DS; idy=idy+1) begin
          $display($time,,"%m get_data = %b(%x) ", get_data,get_data);
 		 $display($time,,"%m data(%0d) = %b(%x) ", idy,data[idy],data[idy]);
-		//  $display($time,,"%m 8*idy = %0d ", 8*idy);
-		 $display($time,,"%m (data[%0d] << %0d => %32b(%x) ", idy,8*idy,data[idy]<<(8*idy),data[idy]<<(8*idy));
+		 $display($time,,"%m 8*idy = %0d ", 8*idy);
+		 $display($time,,"%m (data[%0d] << %0d => %b(%x) ", idy,8*idy,data[idy]<<(8*idy),data[idy]<<(8*idy));
 
 		 get_data = get_data | (data[idy]<<(8*idy));
 		 

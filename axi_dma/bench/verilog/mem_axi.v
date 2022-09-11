@@ -655,13 +655,10 @@ module mem_axi #(parameter AXI_WIDTH_CID= 4 // Channel ID width in bits
      integer abits, depth;
      initial begin
         depth  = 1<<ADDR_LENGTH;
-        $display("%m INFO %03dK (%06d) byte memory", depth/1024, depth);
+        //$display("%m INFO %03dK (%06d) byte memory", depth/1024, depth);
         abits = ADDR_LENGTH-AXI_WIDTH_DSB;
-        //if (abits>10) begin
-        //       $display("%m INFO sdpram_8x%02dK should be used", 1<<(abits-10));
-        //end else begin
-        //       $display("%m INFO sdpram_8x%03d should be used", 1<<abits);
-        //end
+       
+	   
      end
      // synopsys translate_on
      //-----------------------------------------------------------

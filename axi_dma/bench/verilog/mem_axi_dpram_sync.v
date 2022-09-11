@@ -91,9 +91,20 @@ module mem_axi_dpram_sync
      reg   [WIDTH_AD-WIDTH_DSB-1:0] ta;
      integer idx;
      begin
+		// 	 $display($time,,"%m addr = %0x",addr);
+		//    $display($time,,"%m data = %0x",data);
+		//    $display($time,,"%m be = %0x",be);	
+
            ta = addr[WIDTH_AD-1:WIDTH_DSB];
+	//   $display($time,,"%m ta = %0x",ta);
+
            for (idx=0; idx<WIDTH_DS; idx=idx+1) begin
-                if (be[idx]) mem[ta][(idx*8) +: 8] = data[(idx*8) +: 8];
+              if (be[idx]) begin
+				   mem[ta][(idx*8) +: 8] = data[(idx*8) +: 8];
+				   
+				//    $display($time,,"%m mem = %0x",mem);
+				//   $display($time,,"%m data[%0d*8+8] = %x",idx,data[(idx*8) +: 8]);
+				end
            end
      end
      endtask

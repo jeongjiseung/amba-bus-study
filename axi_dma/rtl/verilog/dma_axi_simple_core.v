@@ -15,7 +15,7 @@
 `timescale 1ns/1ns
 
 module dma_axi_simple_core
-     #(parameter AXI_MST_ID   =1         // Master ID
+     #(parameter AXI_MST_ID   =20         // Master ID // 1
                , AXI_WIDTH_CID=4
                , AXI_WIDTH_ID =4         // ID width in bits
                , AXI_WIDTH_AD =32        // address width
