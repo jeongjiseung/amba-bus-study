@@ -1,5 +1,5 @@
 `ifndef DMA_AXI_SIMPLE_FIFO_SYNC_SMALL
-`define DMA_AXI_SIMPLE_FIFO_SYNC_SMALL
+   `define DMA_AXI_SIMPLE_FIFO_SYNC_SMALL
 //----------------------------------------------------------------
 // Synchronous FIFO
 //----------------------------------------------------------------
@@ -130,9 +130,10 @@ module dma_axi_simple_fifo_sync_small
    //---------------------------------------------------
    assign fullN  = (rd_cnt>=(FDT-FULN));
    assign emptyN = (rd_cnt<=FULN);
+   
    //---------------------------------------------------
    // synopsys translate_off
-`ifdef RIGOR
+//`ifdef RIGOR
    //always @ (posedge clk) begin
    //    if (full) $display($time,,"%m: synchronous fifo full.....");
    //end
@@ -148,9 +149,10 @@ module dma_axi_simple_fifo_sync_small
              $display($time,, "%m: count mis-match: rd_cnt:wr_cnt %d:%d", rd_cnt, wr_cnt);
       end
    end
-`endif
+//`endif
    // synopsys translate_on
    //---------------------------------------------------
+
    reg [FDW-1:0] Mem [0:FDT-1];
    assign rd_dout  = Mem[fifo_head[FAW-1:0]];
    always @(posedge clk) begin

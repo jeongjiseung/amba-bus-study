@@ -1,0 +1,1 @@
+-prj "xsim.prj" -debug "typical" "top" -s "top" 

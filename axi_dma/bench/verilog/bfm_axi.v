@@ -16,7 +16,7 @@
 //----------------------------------------------------------------
 `timescale 1ns/1ns
 
-module bfm_axi #(parameter MST_ID   =0         // Master ID
+module bfm_axi #(parameter MST_ID   =0        // Master ID
                          , WIDTH_CID=4
                          , WIDTH_ID =4         // ID width in bits
                          , WIDTH_AD =32        // address width
@@ -92,7 +92,7 @@ module bfm_axi #(parameter MST_ID   =0         // Master ID
      `endif
      //-----------------------------------------------------------
      , input  wire [WIDTH_ID-1:0]  RID
-     , input  wire [WIDTH_DA-1:0]  RDATA
+     , input  wire [WIDTH_DA-1:0]  RDATA // search!
      , input  wire [ 1:0]          RRESP
      , input  wire                 RLAST
      , input  wire                 RVALID
@@ -163,18 +163,25 @@ module bfm_axi #(parameter MST_ID   =0         // Master ID
            repeat (5) @ (posedge ACLK);
            //-----------------------------------------------------
            
-           csr_test;
+           //csr_test;
+           /*
+            여기는 bfm쪽 test구나.
+            mem은 관련없음.
+           */
 
            
            //-----------------------------------------------------
            // normal case
 if (1) begin
-      //      repeat (5) @ (posedge ACLK);
-      //      repeat (10) @ (posedge ACLK);
-           one_dma_test( 32'h8000_1000 // src d:291
-                       , 32'h8000_2000 // dst d:400
-                       , 16'h1      // bnum
-                       ,  8'h1 // chunk
+           repeat (10) @ (posedge ACLK);
+
+      /*
+      mem 쪽으로 ar은 src , aw는 dst 네.
+      */
+           one_dma_test( 32'h0000_1000 // src
+                       , 32'h0001_1000 // dst
+                       , 16'h0004      // bnum  16
+                       ,  8'h8 // chunk
                        ,  8'h0 // data offset
                        );
 end
@@ -251,18 +258,18 @@ end
 
            //-----------------------------------------------------
 
-$display($time,,"%m \nlalalalalalalalalalalalalalalalalalalalalalalalalala");
+// $display($time,,"%m \nlalalalalalalalalalalalalalalalalalalalalalalalalala");
 
 
-for(i=0;i<WIDTH_DS;i=i+1) begin
-	    $display($time,,"%m dataRB[%0D] = %b(%x)",i,dataRB[i],dataRB[i]);
-	 end
-for(i=0;i<WIDTH_DS;i=i+1) begin
-	    $display($time,,"%m dataRW[%0D] = %b(%x)",i,dataRW[i],dataRW[i]);
-	 end
-       for(i=0;i<WIDTH_DS;i=i+1) begin
-	    $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
-	 end
+// for(i=0;i<WIDTH_DS;i=i+1) begin
+// 	    $display($time,,"%m dataRB[%0D] = %b(%x)",i,dataRB[i],dataRB[i]);
+// 	 end
+// for(i=0;i<WIDTH_DS;i=i+1) begin
+// 	    $display($time,,"%m dataRW[%0D] = %b(%x)",i,dataRW[i],dataRW[i]);
+// 	 end
+//        for(i=0;i<WIDTH_DS;i=i+1) begin
+// 	    $display($time,,"%m dataWB[%0D] = %b(%x)",i,dataWB[i],dataWB[i]);
+// 	 end
 
 
 

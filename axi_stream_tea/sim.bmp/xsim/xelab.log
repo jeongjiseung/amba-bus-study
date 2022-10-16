@@ -1,0 +1,25 @@
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -prj xsim.prj -debug typical top -s top 
+Multi-threading is on. Using 10 slave threads.
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/check.v" into library work
+INFO: [VRFC 10-311] analyzing module check
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/bmp_stimulus_file.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_stimulus_file
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/top.v" into library work
+INFO: [VRFC 10-311] analyzing module top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/rtl/verilog/tea_decryptor_core.v" into library work
+INFO: [VRFC 10-311] analyzing module tea_decryptor_core
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/rtl/verilog/tea_encryptor_core.v" into library work
+INFO: [VRFC 10-311] analyzing module tea_encryptor_core
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ns
+Compiling module work.bmp_stimulus_file
+Compiling module work.tea_encryptor_core
+Compiling module work.tea_decryptor_core
+Compiling module work.check
+Compiling module work.top
+Built simulation snapshot top

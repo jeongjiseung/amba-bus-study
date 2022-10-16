@@ -21,7 +21,7 @@ module dma_axi_simple_core_read
                , AXI_WIDTH_SID=AXI_WIDTH_CID+AXI_WIDTH_ID
                , FIFO_WIDTH   =AXI_WIDTH_DS+AXI_WIDTH_DA
                , FIFO_AW      =4
-               , FIFO_DEPTH   =(1<<FIFO_AW)
+               , FIFO_DEPTH   =(1<<FIFO_AW) // 16
                )
 (
        input  wire                     ARESETn
@@ -61,6 +61,7 @@ module dma_axi_simple_core_read
             , ST_ALIGN    = 'h2
             , ST_READ     = 'h3
             , ST_READ_DONE= 'h4;
+
    reg [2:0] state = ST_READY; // synthesis attribute keep of state is "true";
    //-----------------------------------------------------
    always @ (posedge ACLK or negedge ARESETn) begin
@@ -89,33 +90,52 @@ module dma_axi_simple_core_read
    end else begin
    case (state)
    ST_READY: begin
-      if (DMA_GO==1'b0) DMA_DONE <= 1'b0;
-      if ((DMA_DONE==1'b0)&& // wait until end of previous one
-          (fifo_empty==1'b1)&& // wait until end of DMA write
-          (DMA_GO==1'b1)&&(DMA_BNUM!=0)) begin
+
+      if (DMA_GO==1'b0) begin 
+        DMA_DONE <= 1'b0; 
+        end
+
+      if ((DMA_DONE==1'b0) && // wait until end of previous one
+          (fifo_empty==1'b1) && // wait until end of DMA write
+          (DMA_GO==1'b1) && 
+          (DMA_BNUM!=0)) begin
+
           DMA_BUSY  <=  1'b1;
           DMA_DONE  <=  1'b0;
+
           R_go      <=  1'b0;
           R_addr    <= DMA_SRC;
           R_size    <=   'h0; //1=1byte, 2=2byte, ..
           R_len     <=  9'h0; //1=1beat, 2=2beat, ..
           R_rem     <= DMA_BNUM;
+
           if (DMA_BNUM<=AXI_WIDTH_DS) begin
               R_chunk   <= DMA_BNUM;
           end else if (DMA_CHUNK<=AXI_WIDTH_DS) begin
-              R_chunk   <= AXI_WIDTH_DS;
+              R_chunk   <= AXI_WIDTH_DS; // 4
           end else begin
-              if (DMA_CHUNK[7:AXI_WIDTH_DSB]>FIFO_DEPTH) begin
+
+              if (DMA_CHUNK[7:AXI_WIDTH_DSB] > FIFO_DEPTH) begin
                   R_chunk   <= {FIFO_DEPTH,{AXI_WIDTH_DSB{1'b0}}};
               end else begin
                   R_chunk   <= {DMA_CHUNK[7:AXI_WIDTH_DSB],{AXI_WIDTH_DSB{1'b0}}};
               end
+
           end
+
+        //   $display($time,,"%m DMA_CHUNK = %b(%x)",DMA_CHUNK,DMA_CHUNK);
+        //   $display($time,,"%m AXI_WIDTH_DSB = %0d",AXI_WIDTH_DSB);
+        //   $display($time,,"%m FIFO_DEPTH = %0d",FIFO_DEPTH);
+        //   $display($time,,"%m R_chunk = %0d",R_chunk);
+        //   $display($time,,"%m {FIFO_DEPTH,{AXI_WIDTH_DSB{1'b0}} = %0d",{FIFO_DEPTH,{AXI_WIDTH_DSB{1'b0}}});
+        //   $display($time,,"%m {DMA_CHUNK[7:AXI_WIDTH_DSB],{AXI_WIDTH_DSB{1'b0}}} = %0d",{DMA_CHUNK[7:AXI_WIDTH_DSB],{AXI_WIDTH_DSB{1'b0}}});
+
           if (|DMA_SRC[AXI_WIDTH_DSB-1:0]) begin // mis-aligned start
               state <= ST_MISALIGN;
           end else begin // aligned start
               state <= ST_ALIGN;
           end
+
       end
       end // ST_READY
    ST_MISALIGN: begin
@@ -227,6 +247,7 @@ module dma_axi_simple_core_read
    reg [1:0] state_read=SR_IDLE; // synthesis attribute keep of state_read is "true";
    //-------------------------------------------------------
    always @ (posedge ACLK or negedge ARESETn) begin
+
    if (ARESETn==0) begin
        M_ARID     <=  'h0;
        M_ARADDR   <=  'h0;
@@ -275,39 +296,47 @@ module dma_axi_simple_core_read
    case (state_read)
    SR_IDLE: begin
       if (R_go==1'b1) begin
-          M_ARID     <= CID+1; CID <= CID + 1;
+          M_ARID     <= CID+1; 
+          CID <= CID + 1;
+
           M_ARADDR   <= R_addr;
           M_ARLEN    <= R_len - 1;
+
           case (R_size)
-          'd1:  M_ARSIZE <= 'h0;
-          'd2:  M_ARSIZE <= 'h1;
-          'd4:  M_ARSIZE <= 'h2;
-          'd8:  M_ARSIZE <= 'h3;
-          'd16: M_ARSIZE <= 'h4;
-          default: M_ARSIZE <= 'h0;
+            'd1:  M_ARSIZE <= 'h0;
+            'd2:  M_ARSIZE <= 'h1;
+            'd4:  M_ARSIZE <= 'h2; // here
+            'd8:  M_ARSIZE <= 'h3;
+            'd16: M_ARSIZE <= 'h4;
+            default: M_ARSIZE <= 'h0;
           endcase
+
           M_ARVALID  <= 1'b1;
           state_read <= SR_ARB;
+
       end
       end // SR_IDLE
-   SR_ARB: begin
+   SR_ARB: begin // 1
       if (M_ARREADY) begin
           M_ARVALID  <= 1'b0;
           R_cnt      <= 9'h1;
+
           state_read <= SR_RD;
       end
       end // SR_ARB
    SR_RD: begin
-      if (M_RVALID&M_RREADY&fifo_wr_rdy&fifo_wr_vld) begin
+      if (M_RVALID & M_RREADY & fifo_wr_rdy & fifo_wr_vld) begin
           R_cnt <= R_cnt + 1;
-          if (R_cnt>=R_len) begin
+
+          if (R_cnt >= R_len) begin
                R_done     <= 1'b1;
                state_read <= SR_DONE;
+
                // synthesis translate_off
-               if (M_RLAST!=1'b1) begin
+               if (M_RLAST != 1'b1) begin
                    $display($time,,"%m RLAST not driven");
                end
-               if (M_RID!==CID) begin
+               if (M_RID !== CID) begin
                    $display($time,,"%m RID mismatch");
                end
                // synthesis translate_on

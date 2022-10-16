@@ -1,0 +1,85 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Mon Oct 03 14:04:01 2022
+[*]
+[dumpfile] "C:\Users\faste\Desktop\AMBA AXI\codes.practice\axi_stream_tea\sim.bmp\xsim\my_wave\wave.vcd"
+[savefile] "C:\Users\faste\Desktop\AMBA AXI\codes.practice\axi_stream_tea\sim.bmp\xsim\my_wave\1003_wave.gtkw"
+[timestart] 140
+[size] 1920 1017
+[pos] -139 -139
+*-6.459236 477 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.u_stimulus.
+[sst_width] 197
+[signals_width] 386
+[sst_expanded] 1
+[sst_vpaned_height] 300
+@28
+top.clk
+@22
+top.de_textI[63:0]
+@28
+top.de_textI_vld
+@22
+top.de_textO[63:0]
+@28
+top.de_textO_vld
+@22
+top.en_textI[63:0]
+@28
+top.en_textI_vld
+@22
+top.en_textO[63:0]
+@28
+top.en_textO_vld
+@22
+top.key[127:0]
+@28
+top.resetn
+@200
+-
+-checker ##################
+@28
+top.u_check.clk
+top.u_check.textI_vld
+@420
+top.u_check.idx
+top.u_check.idy
+@22
+top.u_check.r_textO[63:0]
+@28
+top.u_check.resetn
+@22
+top.u_check.textI[63:0]
+@23
+top.u_check.textO[63:0]
+@28
+top.u_check.textO_vld
+@200
+-
+-en ############
+@820
+top.u_encryptor.DELTA
+@28
+top.u_encryptor.clk
+top.u_encryptor.idx
+@24
+top.u_encryptor.idx
+@22
+top.u_encryptor.key0[31:0]
+top.u_encryptor.key1[31:0]
+top.u_encryptor.key2[31:0]
+top.u_encryptor.key3[31:0]
+top.u_encryptor.key[127:0]
+@28
+top.u_encryptor.resetn
+top.u_encryptor.textI_vld
+@22
+top.u_encryptor.textI[63:0]
+top.u_encryptor.textO[63:0]
+@28
+top.u_encryptor.textO_vld
+@22
+top.u_encryptor.vld[63:0]
+[pattern_trace] 1
+[pattern_trace] 0

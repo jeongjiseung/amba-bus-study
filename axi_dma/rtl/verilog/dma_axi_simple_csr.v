@@ -65,15 +65,15 @@ module dma_axi_simple_csr #(parameter T_ADDR_WID=8)
    //-------------------------------------------------------
    // CSR
    //-------------------------------------------------------
-   wire [31:0] csr_name0   = "DMA "; // 
-   wire [31:0] csr_name1   = "AXI "; // 
-   wire [31:0] csr_name2   = "    "; // 
-   wire [31:0] csr_name3   = "    "; // 
+   wire [31:0] csr_name0   = "DMA"; // 
+   wire [31:0] csr_name1   = "AXI"; // 
+   wire [31:0] csr_name2   = "js3"; // 
+   wire [31:0] csr_name3   = "js4"; // 
    wire [31:0] csr_comp0   = "DYNA"; // 
    wire [31:0] csr_comp1   = "LITH"; // 
-   wire [31:0] csr_comp2   = "    "; // 
-   wire [31:0] csr_comp3   = "    "; // 
-   wire [31:0] csr_version = 32'h20150712;//
+   wire [31:0] csr_comp2   = "comp2"; // 
+   wire [31:0] csr_comp3   = "comp3"; // 
+   wire [31:0] csr_version = 32'h20220917;// 32'h20150712
    //-------------------------------------------------------
    reg         csr_ctl_en    = 1'b0; // bit-31
    reg         csr_ctl_ip    = 1'b0; // bit-1
@@ -92,6 +92,7 @@ module dma_axi_simple_csr #(parameter T_ADDR_WID=8)
        T_RDATA <= 'h0;
    end else begin
       if (T_RDEN) begin
+        // 글자를 보낸거였어..ㄷㄷ
          case (T_ADDR) // synthesis full_case parallel_case
            CSRA_NAME0   : T_RDATA <= csr_name0  ;
            CSRA_NAME1   : T_RDATA <= csr_name1  ;
@@ -102,11 +103,13 @@ module dma_axi_simple_csr #(parameter T_ADDR_WID=8)
            CSRA_COMP2   : T_RDATA <= csr_comp2  ;
            CSRA_COMP3   : T_RDATA <= csr_comp3  ;
            CSRA_VERSION : T_RDATA <= csr_version;
+
            CSRA_CONTROL : T_RDATA <= {csr_ctl_en // bit-31
                                      ,29'h0      // bit-30~2
                                      ,csr_ctl_ip // bit-1
                                      ,csr_ctl_ie // bit-0
                                      };
+
            CSRA_NUM     : T_RDATA <= {csr_num_go    // bit-31
                                      ,DMA_BUSY      // bit-30
                                      ,DMA_DONE      // bit-29
@@ -114,6 +117,7 @@ module dma_axi_simple_csr #(parameter T_ADDR_WID=8)
                                      ,csr_num_chunk // bit-23~16
                                      ,csr_num_byte  // bit-15~0
                                      };
+                                     
            CSRA_SOURCE  : T_RDATA <= csr_source;
            CSRA_DEST    : T_RDATA <= csr_dest;
            default: begin

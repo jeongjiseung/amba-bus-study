@@ -41,14 +41,14 @@ task read_task;
      input [31:0]         type; // burst type
 begin
  
-$display($time,,"%m <read_task - start> addr = %x",addr);
+// $display($time,,"%m <read_task - start> addr = %x",addr);
  
  fork
      read_address_channel(id,addr,size,leng,type);
      read_data_channel(id,addr,size,leng,type);
  join
 
- $display($time,,"%m <read_task - finish>");
+//  $display($time,,"%m <read_task - finish>");
 
 end
 endtask
@@ -109,7 +109,7 @@ begin
           strb = get_strb(naddr, size);
           // $display($time,,"%m strb=%b",strb);
           dataR = RDATA;
-          $display($time,,"%m dataR=%x",RDATA);
+        //   $display($time,,"%m dataR=%x(%s)",RDATA,RDATA);
 
           for (idy=0; idy<WIDTH_DS; idy=idy+1) begin
                //   $display($time,,"%m idy:%0d < WIDTH_DS:%0d",idy,WIDTH_DS);
@@ -148,9 +148,9 @@ begin
      end
 
 //rdc=0;
-     for(rdc=0;rdc<WIDTH_DS;rdc=rdc+1) begin
-	    $display($time,,"%m dataRB[%0D] = %b(%x)",rdc,dataRB[rdc],dataRB[rdc]);
-	 end
+    //  for(rdc=0;rdc<WIDTH_DS;rdc=rdc+1) begin
+	//     $display($time,,"%m dataRB[%0D] = %b(%x)",rdc,dataRB[rdc],dataRB[rdc]);
+	//  end
 
      RREADY <= #1 'b0;
 
@@ -166,13 +166,15 @@ task write_task;
      input [31:0]         leng; // 1 ~ 16  beats in a burst
      input [31:0]         type; // burst type
 begin
+
+    
      fork
      write_address_channel(id,addr,size,leng,type);
      write_data_channel(id,addr,size,leng,type);
      write_resp_channel(id);
      join
 
-     $display($time,,"%m <write_task - finish>");
+    //  $display($time,,"%m <write_task - finish>");
 end
 endtask
 //----------------------------------------------------------------
@@ -219,9 +221,7 @@ begin
 	 
      for (idx=0; idx<leng; idx=idx+1) begin
           WDATA <= #1 get_data(addr, naddr, size);
-     $display($time,,"%m @@ WDATA: %b(%x)", WDATA,WDATA);
-
-
+    //  $display($time,,"%m @@ WDATA: %b(%x)", WDATA,WDATA);
 
           WSTRB <= #1 get_strb(naddr, size);
 
@@ -249,7 +249,7 @@ begin
      while (BVALID==1'b0) @ (posedge ACLK);
 	 
      if (id!=BID) begin
-        $display($time,,"%m Error id mis-match for write-resp-channel 0x%x/0x%x", id, BID);
+        $display($time,,"%m Error id mis-match for write-resp-channel 0x%x(%0d)/0x%x(%0d)", id, id, BID, BID);
      end else begin
          case (BRESP)
 			 2'b00: $display($time,,"%m OK response for write-resp-channel: OKAY");
@@ -360,9 +360,9 @@ begin
     end
 
     offset = addr%WIDTH_DS;
-	$display($time,,"%m get_data) offset=%0d", offset);
-	$display($time,,"%m get_data) saddr=%x", saddr);
-	$display($time,,"%m get_data) addr=%x", addr);
+	// $display($time,,"%m get_data) offset=%0d", offset);
+	// $display($time,,"%m get_data) saddr=%x", saddr);
+	// $display($time,,"%m get_data) addr=%x", addr);
 	
 	
     ids = 0;
@@ -377,28 +377,28 @@ begin
           idz = addr+(idx-offset)-saddr;
           data[idx] = dataWB[idz];
 
-          $display($time,,"%m dataWB[idz] ) dataWB[%0d] : %b(%x) ", idz, dataWB[idz], dataWB[idz]);
+        //   $display($time,,"%m dataWB[idz] ) dataWB[%0d] : %b(%x) ", idz, dataWB[idz], dataWB[idz]);
           // $display($time,,"%m data[idx] ) data[%0d]  : %b(%x)", idx, data[idz], data[idz]);
 
           ids = ids + 1;
     end
 
     get_data = 0;
-	$display();
+	// $display();
 
     for (idy=0; idy<WIDTH_DS; idy=idy+1) begin
-         $display($time,,"%m get_data = %b(%x) ", get_data,get_data);
-		 $display($time,,"%m data(%0d) = %b(%x) ", idy,data[idy],data[idy]);
+        //  $display($time,,"%m get_data = %b(%x) ", get_data,get_data);
+		//  $display($time,,"%m data(%0d) = %b(%x) ", idy,data[idy],data[idy]);
 		//  $display($time,,"%m 8*idy = %0d ", 8*idy);
-		 $display($time,,"%m (data[%0d] << %0d => %32b(%x) ", idy,8*idy,data[idy]<<(8*idy),data[idy]<<(8*idy));
+		//  $display($time,,"%m (data[%0d] << %0d => %32b(%x) ", idy,8*idy,data[idy]<<(8*idy),data[idy]<<(8*idy));
 
 		 get_data = get_data | (data[idy]<<(8*idy));
 		 
-		 $display($time,,"%m get_data !! = %b(%x) ", get_data,get_data);
+		//  $display($time,,"%m get_data !! = %b(%x) ", get_data,get_data);
 		 
     end
 	
-$display($time,,"%m return get_data  =>> %b(%x) ", get_data,get_data);
+// $display($time,,"%m return get_data  =>> %b(%x) ", get_data,get_data);
 
     //for (idy=WIDTH_DS-1; idy>=0; idy=idy-1) begin
     //     get_data = (get_data<<8)|data[idy];

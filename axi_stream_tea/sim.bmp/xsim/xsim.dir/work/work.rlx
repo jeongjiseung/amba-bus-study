@@ -1,0 +1,10 @@
+0.6
+2019.1
+May 24 2019
+15:06:07
+C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/bmp_handle.v,1618889453,verilog,,,,,,,,,,,,
+C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/bmp_stimulus_file.v,1618889453,verilog,,C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/top.v,C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/bmp_handle.v,bmp_stimulus_file,,,../../bench.bmp/verilog;../../rtl/verilog,SIM;VCD;VIVADO,,,,
+C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/check.v,1618889453,verilog,,C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/bmp_stimulus_file.v,,check,,,../../bench.bmp/verilog;../../rtl/verilog,SIM;VCD;VIVADO,,,,
+C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/bench.bmp/verilog/top.v,1618889453,verilog,,C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/rtl/verilog/tea_decryptor_core.v,,top,,,../../bench.bmp/verilog;../../rtl/verilog,SIM;VCD;VIVADO,,,,
+C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/rtl/verilog/tea_decryptor_core.v,1618889453,verilog,,C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/rtl/verilog/tea_encryptor_core.v,,tea_decryptor_core,,,../../bench.bmp/verilog;../../rtl/verilog,SIM;VCD;VIVADO,,,,
+C:/Users/faste/Desktop/AMBA AXI/codes.practice/axi_stream_tea/rtl/verilog/tea_encryptor_core.v,1618889453,verilog,,,,tea_encryptor_core,,,../../bench.bmp/verilog;../../rtl/verilog,SIM;VCD;VIVADO,,,,

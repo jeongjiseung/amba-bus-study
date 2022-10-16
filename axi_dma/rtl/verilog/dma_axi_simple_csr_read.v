@@ -94,7 +94,7 @@ module dma_axi_simple_csr_read
          stateR      <= STR_IDLE;
      end else begin
      case (stateR)
-     STR_IDLE: begin
+     STR_IDLE: begin // 0
          if ((S_ARVALID==1'b1)&&(S_ARREADY==1'b1)) begin
               S_ARADDR_reg  <= S_ARADDR ;
               S_ARLEN_reg   <= S_ARLEN  ;
@@ -117,8 +117,10 @@ module dma_axi_simple_csr_read
               beatRA      <=  'h0;
               TR_RDEN     <= 1'b0;
               TR_REQ      <= 1'b1;
+
               if (TR_GRT) stateR <= STR_READ_ADR;
               else        stateR <= STR_READ_ARB;
+
               // synthesis translate_off
               if (S_ARLEN!=='h0) $display($time,,"%m ERROR burst not allowed");
               if (S_ARSIZE!=='h2) $display($time,,"%m ERROR partial not allowed");
@@ -144,6 +146,7 @@ module dma_axi_simple_csr_read
          end // STR_READ_ADR
      STR_READ_DAT: begin
          S_RID    <= S_RID_reg;
+
          if (AXI_WIDTH_DA==128) begin
              case (addrR[3:2])
              2'b00: begin S_RDATA[127:96] <= 32'h0;
@@ -178,6 +181,7 @@ module dma_axi_simple_csr_read
          end else begin
              S_RDATA  <= TR_RDATA;
          end
+         
          S_RRESP  <= 2'b00;
          S_RVALID <= 1'b1;
          if (S_ARLEN_reg==beatRA) begin

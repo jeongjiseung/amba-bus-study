@@ -141,7 +141,8 @@ module top ;
    wire  [WIDTH_RUSER-1:0]   BFM_RUSER   , MEM_RUSER   ;
    `endif
    //---------------------------------------------------------
-   bfm_axi    #(.MST_ID   (0        ) // Master ID
+   bfm_axi    #(
+                .MST_ID   (0) // Master ID
                ,.WIDTH_CID(WIDTH_CID)
                ,.WIDTH_ID (WIDTH_ID ) // ID width in bits
                ,.WIDTH_AD (WIDTH_AD ) // address width
@@ -210,7 +211,8 @@ module top ;
    assign BFM_WID [WIDTH_SID-1:WIDTH_ID] = BFM_MID;
    assign BFM_ARID[WIDTH_SID-1:WIDTH_ID] = BFM_MID;
    //---------------------------------------------------------
-   dma_axi_simple #(.AXI_MST_ID   (1        ) // Master ID
+   dma_axi_simple #(
+                   .AXI_MST_ID   (1) // Master ID
                    ,.AXI_WIDTH_CID(WIDTH_CID)
                    ,.AXI_WIDTH_ID (WIDTH_ID ) // ID width in bits
                    ,.AXI_WIDTH_AD (WIDTH_AD ) // address width

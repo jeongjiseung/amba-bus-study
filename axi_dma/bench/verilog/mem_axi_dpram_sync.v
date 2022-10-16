@@ -51,23 +51,28 @@ module mem_axi_dpram_sync
     if (RESETn==1'b0) begin
     end else begin
         if (WEN==1'b1) begin
+
             for (idx=0; idx<WIDTH_DS; idx=idx+1) begin
                  //if (WSTRB[idx]) mem[ta][(idx+1)*8-1:idx*8] <= WDATA[(idx+1)*8-1:idx*8];
                  if (WSTRB[idx]) mem[ta][(idx*8) +: 8] <= WDATA[(idx*8) +: 8];
             end
+
             if (REN==1'b1) begin
                 if (ta===tb) begin
-                    //if (WSTRB[idx]) RDATA[(idx+1)*8-1:idx*8] <= WDATA[(idx+1)*8-1:idx*8];
-                    //else            RDATA[(idx+1)*8-1:idx*8] <= mem[ta][(idx+1)*8-1:idx*8];
                     if (WSTRB[idx]) RDATA[(idx*8) +: 8] <= WDATA[(idx*8) +: 8];
                     else            RDATA[(idx*8) +: 8] <= mem[ta][(idx*8) +: 8];
-                end else begin
+                end 
+                else begin
                     RDATA <= mem[tb];
+                     $display("%m REN) tb=%x", tb);
+                     $display("%m REN) mem[tb]=%x", mem[tb]);
                 end
             end
         end else begin
             if (REN==1'b1) begin
                 RDATA <= mem[tb];
+                // $display("%m REN-B) tb=%x", tb);
+                // $display("%m REN-B) mem[tb]=%x", mem[tb]);
             end
         end
     end
@@ -88,22 +93,33 @@ module mem_axi_dpram_sync
      input [WIDTH_AD-1:0] addr;
      input [WIDTH_DA-1:0] data;
      input [WIDTH_DS-1:0] be  ;
+
      reg   [WIDTH_AD-WIDTH_DSB-1:0] ta;
      integer idx;
-     begin
-		// 	 $display($time,,"%m addr = %0x",addr);
-		//    $display($time,,"%m data = %0x",data);
-		//    $display($time,,"%m be = %0x",be);	
 
-           ta = addr[WIDTH_AD-1:WIDTH_DSB];
-	//   $display($time,,"%m ta = %0x",ta);
+     begin
+			 $display($time,,"%m addr = %8x",addr);
+		   
+		   $display($time,,"%m data = %0d",data);
+           $display($time,,"%m data(h) = %8x",data);
+
+		   $display($time,,"%m be = %b",be);	
+		   
+           
+        //    $display($time,,"%m WIDTH_DSB = %0d",WIDTH_DSB);	
+$display($time,,"%m WIDTH_AD-WIDTH_DSB-1 = %0d",WIDTH_AD-WIDTH_DSB-1);
+          ta = addr[WIDTH_AD-1:WIDTH_DSB]; // WIDTH_AD =20 , WIDTH_DSB = 2
+	      $display($time,,"%m addr[%0d:%0d] = %x",WIDTH_AD-1,WIDTH_DSB,addr[WIDTH_AD-1:WIDTH_DSB]);
+	      $display($time,,"%m ta = %8x",ta);
+	      $display($time,,"%m ta(b) = %b",ta);
 
            for (idx=0; idx<WIDTH_DS; idx=idx+1) begin
               if (be[idx]) begin
 				   mem[ta][(idx*8) +: 8] = data[(idx*8) +: 8];
-				   
-				//    $display($time,,"%m mem = %0x",mem);
-				//   $display($time,,"%m data[%0d*8+8] = %x",idx,data[(idx*8) +: 8]);
+
+                  //$display($time,,"%m data[%0d*8+8] = %x",idx,data[(idx*8) +: 8]); 
+                  $display($time,,"%m data[%0d:%0d] = %x",(idx*8)+8,(idx*8),data[(idx*8) +: 8]); 
+				  
 				end
            end
      end
@@ -116,6 +132,8 @@ module mem_axi_dpram_sync
      begin
            ta = addr[WIDTH_AD-1:WIDTH_DSB];
            data = mem[ta];
+
+           $display($time,,"%m mem read) data = %x",data); 
      end
      endtask
      // synthesis translate_on
